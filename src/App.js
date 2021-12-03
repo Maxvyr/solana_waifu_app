@@ -6,9 +6,19 @@ import './App.css';
 const TWITTER_HANDLE = '_buildspace';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
+const TEST_GIFS = [
+  'https://i.waifu.pics/_zlfBgp.jpg',
+  'https://i.waifu.pics/2XuoPFb.png',
+  'https://media.giphy.com/media/l1J9BzV9oRSdIKNDq/giphy-downsized-large.gif',
+  'https://media.giphy.com/media/OOSbqEBoTmA2OUN3pO/giphy.gif',
+  'https://media.giphy.com/media/dc4UxTw2ueAbm/giphy.gif',
+  'https://media.giphy.com/media/5bHgk2QtDaVl3TxP3M/giphy.gif'
+]
+
 const App = () => {
 
-  const [walletAddress, setWalletAddress] = useState(null)
+  const [walletAddress, setWalletAddress] = useState(null);
+  const [inputValue, setinputValue] = useState("");
 
   //check if wallet solana is in the browser
   const checkIfWalletIsConnected = async () => {
@@ -45,11 +55,47 @@ const App = () => {
     }
   };
 
+  const onInputChange = (event) => {
+    // recover value inside input and call useEffect
+    const { value }= event.target;
+    setinputValue(value);
+  }
+
+  const sendWaifu = async () => {
+    if(inputValue.length > 0){
+      console.log("Waifu link :", inputValue);
+    } else {
+      console.log("Empty Input ......")
+    }
+  } 
+
   const renderNotConnectedContainer = () => (
     <button 
       className="cta-button connect-wallet-button"
       onClick={connectWallet}
     >Connect to Wallet</button>
+  );
+
+  const renderConnectedContainer = () => (
+  <div className="connected-container">
+    {/* form to add new waifu image */}
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        sendWaifu();
+      }}
+    >
+      <input type="text" placeholder="Enter your waifu link!" value={inputValue} onChange={onInputChange}/>
+      <button type="submit" className="cta-button submit-gif-button">Submit</button>
+    </form>
+    <div className="gif-grid">
+        {TEST_GIFS.map(waifu => (
+          <div className="gif-item" key={waifu}>
+          <img src={waifu} alt={waifu} />
+        </div>
+        ))}
+      </div>
+    </div>
   );
 
   useEffect(() => {
@@ -71,6 +117,8 @@ const App = () => {
           </p>
           {/* Add the condition to show this only if we don't have a wallet address */}
           {!walletAddress && renderNotConnectedContainer()}
+          {/* and if user connected */}
+          {walletAddress && renderConnectedContainer()}
         </div>
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
