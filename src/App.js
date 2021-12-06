@@ -6,7 +6,7 @@ import './App.css';
 const TWITTER_HANDLE = '_buildspace';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
-const TEST_GIFS = [
+const TEST_WAIFUS = [
   'https://i.waifu.pics/_zlfBgp.jpg',
   'https://i.waifu.pics/2XuoPFb.png',
   'https://media.giphy.com/media/l1J9BzV9oRSdIKNDq/giphy-downsized-large.gif',
@@ -19,6 +19,7 @@ const App = () => {
 
   const [walletAddress, setWalletAddress] = useState(null);
   const [inputValue, setinputValue] = useState("");
+  const [waifuList , setWaifuList] = useState([]);
 
   //check if wallet solana is in the browser
   const checkIfWalletIsConnected = async () => {
@@ -64,6 +65,11 @@ const App = () => {
   const sendWaifu = async () => {
     if(inputValue.length > 0){
       console.log("Waifu link :", inputValue);
+      //add new waifu in list
+      setWaifuList([...waifuList, inputValue]);
+
+      //remove text in input
+      setinputValue("");
     } else {
       console.log("Empty Input ......")
     }
@@ -89,7 +95,7 @@ const App = () => {
       <button type="submit" className="cta-button submit-gif-button">Submit</button>
     </form>
     <div className="gif-grid">
-        {TEST_GIFS.map(waifu => (
+        {waifuList.map(waifu => (
           <div className="gif-item" key={waifu}>
           <img src={waifu} alt={waifu} />
         </div>
@@ -105,6 +111,16 @@ const App = () => {
     window.addEventListener('load', onLoad);
     return () => window.removeEventListener('load', onLoad);
   }, []);
+
+  useEffect(() => {
+    console.log("Fetching waifu List")
+
+    //call solana programm
+
+    //set State
+    setWaifuList(TEST_WAIFUS);
+
+  }, [walletAddress]);
 
   return (
     <div className="App">
