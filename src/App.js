@@ -74,7 +74,7 @@ const App = () => {
       console.log("Empty Input ......")
     }
   } 
-
+ 
   const renderNotConnectedContainer = () => (
     <button 
       className="cta-button connect-wallet-button"
