@@ -1,16 +1,16 @@
-# buildspace Solana GIF Portal Project
+# buildspace Solana GIF Waifu Project
 
-### **Welcome 👋**
-To get started with this course, clone this repo and follow these commands:
+![https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg?style=flat-square](https://gitmoji.dev)
 
-1. Run `npm install` at the root of your directory
-2. Run `npm run start` to start the project
-3. Start coding!
+## **Explain**
 
-### **What is the .vscode Folder?**
-If you use VSCode to build your app, we included a list of suggested extensions that will help you build this project! Once you open this project in VSCode, you will see a popup asking if you want to download the recommended extensions :).
+I use the tutorial on the website [buildspace](https://buildspace.so/) to build this application.
+The goal of this application is to learn how to build smart contract on [Solana](https://solana.com/)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A72UVP8)
 
+A new Flutter project to convert image from your gallery to PDF.
 
-### **Questions?**
-Have some questions make sure you head over to your [buildspace Dashboard](https://app.buildspace.so/courses/CObd6d35ce-3394-4bd8-977e-cbee82ae07a3) and link your Discord account so you can get access to helpful channels and your instructor!
+## Crypto Tips
+
+![https://i.imgur.com/4bS8l7R.png](https://i.imgur.com/o7CLDbW.png)
