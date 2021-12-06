@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("DHwvobgca8VM5hs9geaMpzCW6W9wN1hgHiFwSbNPL7GY");
 
 #[program]
 pub mod mywaifupic {

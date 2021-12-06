@@ -1,12 +1,12 @@
 [package]
-name = "mywaifupic"
+name = "back-end-waifu-contract"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2018"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "mywaifupic"
+name = "back_end_waifu_contract"
 
 [features]
 no-entrypoint = []

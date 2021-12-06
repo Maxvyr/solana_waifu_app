@@ -1,0 +1,12 @@
+[programs.devnet]
+back_end_waifu_contract = "DHwvobgca8VM5hs9geaMpzCW6W9wN1hgHiFwSbNPL7GY"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "devnet"
+wallet = "/Users/maxvy/.config/solana/id.json"
+
+[scripts]
+test = "node tests/back-end-waifu-contract.js"
