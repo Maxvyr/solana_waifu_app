@@ -2,6 +2,29 @@ import React, { useEffect, useState } from 'react';
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 
+//interact with contract
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
+import { Program, Provider, web3 } from '@project-serum/anchor';
+import idl from './idl.json'; //file for communicate with smart contract
+
+// SystemProgram is a reference to the Solana blockchain runtime!
+const { SystemProgram, Keypair } = web3;
+
+// Create a keypair for the account that will hold the waifu data.
+let baseAccount = Keypair.generate();
+
+// Get program's id from the IDL file.
+const programID = new PublicKey(idl.metadata.address);
+
+// Set network to devnet.
+const network = clusterApiUrl('devnet');
+
+// Controls how we want to acknowledge when a transaction is "done".
+const opts = {
+  preflightCommitment: "processed"
+}
+
+
 // Constants
 const TWITTER_HANDLE = '_buildspace';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
@@ -62,6 +85,14 @@ const App = () => {
     setinputValue(value);
   }
 
+  const getProvider = () => {
+    const connection = new Connection(network, opts.preflightCommitment);
+    const provider = new Provider(
+      connection, window.solana, opts.preflightCommitment,
+    );
+    return provider;
+  }
+
   const sendWaifu = async () => {
     if(inputValue.length > 0){
       console.log("Waifu link :", inputValue);
@@ -82,27 +113,41 @@ const App = () => {
     >Connect to Wallet</button>
   );
 
-  const renderConnectedContainer = () => (
-  <div className="connected-container">
-    {/* form to add new waifu image */}
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        sendWaifu();
-      }}
-    >
-      <input type="text" placeholder="Enter your waifu link!" value={inputValue} onChange={onInputChange}/>
-      <button type="submit" className="cta-button submit-gif-button">Submit</button>
-    </form>
-    <div className="gif-grid">
-        {waifuList.map(waifu => (
-          <div className="gif-item" key={waifu}>
-          <img src={waifu} alt={waifu} />
+  const renderConnectedContainer = () => {
+    //if empty list
+    if(waifuList === null){
+      return(
+        <div className="connected-container">if
+          <button className="cta-button submit-gif-button" onClick={createWaifuAccount}>
+            Start to add some Waifu Pic ;)
+          </button>
         </div>
-        ))}
-      </div>
-    </div>
-  );
+      )
+    }
+    else{
+      return (
+        <div className="connected-container">
+          {/* form to add new waifu image */}
+          <form
+            onSubmit={(event) => {
+              event.preventDefault();
+              sendWaifu();
+            }}
+          >
+            <input type="text" placeholder="Enter your waifu link!" value={inputValue} onChange={onInputChange}/>
+            <button type="submit" className="cta-button submit-gif-button">Submit</button>
+          </form>
+          <div className="gif-grid">
+              {waifuList.map(waifu => (
+                <div className="gif-item" key={waifu}>
+                <img src={waifu} alt={waifu} />
+              </div>
+              ))}
+            </div>
+          </div>
+      )
+    }
+};
 
   useEffect(() => {
     const onLoad = async () => {
@@ -112,13 +157,47 @@ const App = () => {
     return () => window.removeEventListener('load', onLoad);
   }, []);
 
+  const getWaifuList = async() => {
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+      const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
+      
+      console.log("Got waifu list from the account", account)
+      setWaifuList(account.gifList)
+  
+    } catch (error) {
+      console.log("Error in getWaifuList: ", error)
+      setWaifuList(null);
+    }
+  }
+
+  const createWaifuAccount = async () => {
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+      console.log("ping")
+      await program.rpc.startStuffOff({
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+        },
+        signers: [baseAccount]
+      });
+      console.log("Created a new BaseAccount w/ address:", baseAccount.publicKey.toString())
+      await getWaifuList();
+  
+    } catch(error) {
+      console.log("Error creating BaseAccount account:", error)
+    }
+  }
+
   useEffect(() => {
     console.log("Fetching waifu List")
 
     //call solana programm
-
-    //set State
-    setWaifuList(TEST_WAIFUS);
+    getWaifuList()
 
   }, [walletAddress]);
 
