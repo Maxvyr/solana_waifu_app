@@ -30,18 +30,7 @@ const opts = {
 
 // Constants
 const TWITTER_HANDLE_ME = 'm4xvyr';
-const TWITTER_HANDLE_SITE = '_buildspace';
 const TWITTER_LINK_ME = `https://twitter.com/${TWITTER_HANDLE_ME}`;
-const TWITTER_LINK_SITE = `https://twitter.com/${TWITTER_HANDLE_SITE}`;
-
-const TEST_WAIFUS = [
-  'https://i.waifu.pics/_zlfBgp.jpg',
-  'https://i.waifu.pics/2XuoPFb.png',
-  'https://media.giphy.com/media/l1J9BzV9oRSdIKNDq/giphy-downsized-large.gif',
-  'https://media.giphy.com/media/OOSbqEBoTmA2OUN3pO/giphy.gif',
-  'https://media.giphy.com/media/dc4UxTw2ueAbm/giphy.gif',
-  'https://media.giphy.com/media/5bHgk2QtDaVl3TxP3M/giphy.gif'
-]
 
 const App = () => {
 
