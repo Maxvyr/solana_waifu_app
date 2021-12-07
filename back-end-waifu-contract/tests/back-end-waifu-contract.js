@@ -27,9 +27,9 @@ const main = async() => {
 
   // Fetch data from the account.
   let account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-  console.log('👀 GIF Count', account.totalGifs.toString())
+  console.log('👀 IMG waifu Count', account.totalGifs.toString())
 
-   // Call add_gif!
+   // Call add_waifu!
    await program.rpc.addGif("https://c.tenor.com/Vnly8lIIx28AAAAM/chizuru-chizuru-ichinose.gif",{
     accounts: {
       baseAccount: baseAccount.publicKey,

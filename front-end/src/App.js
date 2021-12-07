@@ -6,12 +6,15 @@ import './App.css';
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
 import idl from './idl.json'; //file for communicate with smart contract
+import kp from './keypair.json'
 
 // SystemProgram is a reference to the Solana blockchain runtime!
-const { SystemProgram, Keypair } = web3;
+const { SystemProgram } = web3;
 
 // Create a keypair for the account that will hold the waifu data.
-let baseAccount = Keypair.generate();
+let arr = Object.values(kp._keypair.secretKey);
+const secret = new Uint8Array(arr);
+let baseAccount = web3.Keypair.fromSecretKey(secret);
 
 // Get program's id from the IDL file.
 const programID = new PublicKey(idl.metadata.address);
@@ -26,8 +29,10 @@ const opts = {
 
 
 // Constants
-const TWITTER_HANDLE = '_buildspace';
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
+const TWITTER_HANDLE_ME = 'm4xvyr';
+const TWITTER_HANDLE_SITE = '_buildspace';
+const TWITTER_LINK_ME = `https://twitter.com/${TWITTER_HANDLE_ME}`;
+const TWITTER_LINK_SITE = `https://twitter.com/${TWITTER_HANDLE_SITE}`;
 
 const TEST_WAIFUS = [
   'https://i.waifu.pics/_zlfBgp.jpg',
@@ -41,7 +46,7 @@ const TEST_WAIFUS = [
 const App = () => {
 
   const [walletAddress, setWalletAddress] = useState(null);
-  const [inputValue, setinputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [waifuList , setWaifuList] = useState([]);
 
   //check if wallet solana is in the browser
@@ -82,7 +87,7 @@ const App = () => {
   const onInputChange = (event) => {
     // recover value inside input and call useEffect
     const { value }= event.target;
-    setinputValue(value);
+    setInputValue(value);
   }
 
   const getProvider = () => {
@@ -94,16 +99,30 @@ const App = () => {
   }
 
   const sendWaifu = async () => {
-    if(inputValue.length > 0){
-      console.log("Waifu link :", inputValue);
-      //add new waifu in list
-      setWaifuList([...waifuList, inputValue]);
-
-      //remove text in input
-      setinputValue("");
-    } else {
-      console.log("Empty Input ......")
+    if(inputValue.length === 0){
+      console.log("No Waifu link given")
+      return
     }
+
+    setInputValue("")
+      console.log("Waifu link :", inputValue);
+
+      try {
+        const provider = getProvider();
+        const program = new Program(idl, programID, provider);
+
+        await program.rpc.addGif(inputValue, {
+          accounts: {
+            baseAccount: baseAccount.publicKey,
+            user: provider.wallet.publicKey,
+          },
+        });
+        console.log("Waifu successfully send to smart contract", inputValue);
+        
+        await getWaifuList();
+      } catch (e){
+        console.log("Error sending Waifu", e);
+      }
   } 
  
   const renderNotConnectedContainer = () => (
@@ -138,11 +157,14 @@ const App = () => {
             <button type="submit" className="cta-button submit-gif-button">Submit</button>
           </form>
           <div className="gif-grid">
-              {waifuList.map(waifu => (
-                <div className="gif-item" key={waifu}>
-                <img src={waifu} alt={waifu} />
-              </div>
-              ))}
+              {waifuList.map(waifu => {
+                console.log(waifu);
+                return (
+                  <div className="gif-item" key={waifu}>
+                    <img src={waifu.gifLink} alt={waifu} />
+                  </div>
+                );
+              })}
             </div>
           </div>
       )
@@ -219,10 +241,10 @@ const App = () => {
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
           <a
             className="footer-text"
-            href={TWITTER_LINK}
+            href={TWITTER_LINK_ME}
             target="_blank"
             rel="noreferrer"
-          >{`built on @${TWITTER_HANDLE}`}</a>
+          >{`built by @${TWITTER_HANDLE_ME}`}</a>
         </div>
       </div>
     </div>
