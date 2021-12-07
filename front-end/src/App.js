@@ -70,6 +70,7 @@ const App = () => {
       const res = await solana.connect();
       console.log("Connect with PublicKey : ", res.publicKey.toString());
       setWalletAddress(res.publicKey.toString());
+
     }
   };
 
@@ -125,7 +126,7 @@ const App = () => {
     //if empty list
     if(waifuList === null){
       return(
-        <div className="connected-container">if
+        <div className="connected-container">
           <button className="cta-button submit-gif-button" onClick={createWaifuAccount}>
             Start to add some Waifu Pic ;)
           </button>
@@ -136,6 +137,7 @@ const App = () => {
       return (
         <div className="connected-container">
           {/* form to add new waifu image */}
+          <h6>Your wallet address is : {walletAddress}</h6>
           <form
             onSubmit={(event) => {
               event.preventDefault();
@@ -146,12 +148,11 @@ const App = () => {
             <button type="submit" className="cta-button submit-gif-button">Submit</button>
           </form>
           <div className="gif-grid">
-              {waifuList.map(waifu => {
-                console.log(waifu);
+              {waifuList.map((waifu, index) => {
                 return (
-                  <div className="gif-item" key={waifu}>
-                    <img src={waifu.gifLink} alt={waifu} />
-                  </div>
+                    <div className="gif-item" key={index}>
+                      <img src={waifu.gifLink} alt={waifu.gifLink} />
+                    </div>
                 );
               })}
             </div>

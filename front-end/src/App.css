@@ -128,3 +128,9 @@
 .connected-container button {
   height: 50px;
 }
+
+h6 {
+  color:#d8d8d8; 
+  font-size: 1rem;
+  text-shadow: 2px 2px 4px #4e44ce;
+}
