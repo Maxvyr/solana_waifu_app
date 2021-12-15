@@ -119,7 +119,7 @@ const App = () => {
     <button 
       className="cta-button connect-wallet-button"
       onClick={connectWallet}
-    >Connect to Wallet</button>
+    >Connect your Wallet</button>
   );
 
   const renderConnectedContainer = () => {
@@ -128,7 +128,7 @@ const App = () => {
       return(
         <div className="connected-container">
           <button className="cta-button submit-gif-button" onClick={createWaifuAccount}>
-            Start to add some Waifu Pic ;)
+            Start to add some Waifu Pic 🧬😁🧬
           </button>
         </div>
       )
@@ -136,8 +136,8 @@ const App = () => {
     else{
       return (
         <div className="connected-container">
-          {/* form to add new waifu image */}
           <h6>Your wallet address is : {walletAddress}</h6>
+          {/* form to add new waifu image */}
           <form
             onSubmit={(event) => {
               event.preventDefault();
@@ -156,6 +156,7 @@ const App = () => {
                 );
               })}
             </div>
+            <div className='footer-spacing'></div>
           </div>
       )
     }
@@ -177,7 +178,6 @@ const App = () => {
       
       console.log("Got waifu list from the account", account)
       setWaifuList(account.gifList)
-  
     } catch (error) {
       console.log("Error in getWaifuList: ", error)
       setWaifuList(null);
@@ -188,7 +188,6 @@ const App = () => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
-      console.log("ping")
       await program.rpc.startStuffOff({
         accounts: {
           baseAccount: baseAccount.publicKey,
@@ -218,7 +217,7 @@ const App = () => {
 			{/* This was solely added for some styling fanciness */}
 			<div className={walletAddress ? 'authed-container' : 'container'}>
         <div className="header-container">
-          <p className="header">🖼 Waifu Portal</p>
+          <p className="header">🧝‍♀️ Waifu Portal 🧝‍♀️</p>
           <p className="sub-text">
             View your Waifu collection in the metaverse ✨
           </p>
